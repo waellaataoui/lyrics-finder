@@ -29,7 +29,7 @@ const reducer = (state, action) => {
 export const getTopTracks = () => {
   return axios
     .get(
-      `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/chart.tracks.get?apikey=${process.env.REACT_APP_MM_KEY}&chart_name=top&page=1&page_size=10&f_has_lyrics=1&country=us`
+      `https://thingproxy.freeboard.io/fetch/https://api.musixmatch.com/ws/1.1/chart.tracks.get?apikey=${process.env.REACT_APP_MM_KEY}&chart_name=top&page=1&page_size=10&f_has_lyrics=1&country=us`
     )
     .then((res) => res.data.message.body.track_list)
     .catch((err) => console.log(err));
@@ -47,14 +47,7 @@ export class Provider extends Component {
       console.log(res);
       this.state.dispatch({ type: "CHARTS", payload: res });
     });
-    // axios
-    //   .get(
-    //     `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/chart.tracks.get?apikey=${process.env.REACT_APP_MM_KEY}&chart_name=top&page=1&page_size=10&f_has_lyrics=1&country=us`
-    //   )
-    //   .then((res) => {
-    //     this.setState({ track_list: res.data.message.body.track_list });
-    //   })
-    //   .catch((err) => console.log(err));
+
   }
   render() {
     return (

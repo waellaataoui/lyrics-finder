@@ -4,6 +4,7 @@ import Spinner from "../Spinner";
 export default class Lyrics extends Component {
   state = {
     lyrics: undefined,
+    missing: false,
     album: undefined,
     genres: undefined,
     explicit: undefined,
@@ -13,19 +14,28 @@ export default class Lyrics extends Component {
     console.log(this.props.match.params);
     axios
       .get(
-        `https://api.lyrics.ovh/v1/${this.props.match.params.artistName}/${this.props.match.params.trackName}`
+        `https://thingproxy.freeboard.io/fetch/https://api.lyrics.ovh/v1/${this.props.match.params.artistName}/${this.props.match.params.trackName}`
       )
       .then((response) => {
         this.setState({ lyrics: response.data.lyrics });
       })
       .catch((err) => {
-        this.setState({
-          lyrics: `No lyrics available :(`
-        });
+        // query musixmatch api
+        axios
+          .get(
+            `https://thingproxy.freeboard.io/fetch/https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
+          ).then(res => {
+            console.log(res.data);
+            this.setState({
+              lyrics: res.data.message.body.lyrics.lyrics_body,
+              missing: true
+            })
+          })
+
       });
     axios
       .get(
-        `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
+        `https://thingproxy.freeboard.io/fetch/https://api.musixmatch.com/ws/1.1/track.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
       )
       .then((res) => {
         console.log(res.data);
@@ -64,15 +74,19 @@ export default class Lyrics extends Component {
               <div className="card">
                 <div className="card-body">
                   {!!this.state.lyrics && (
-                    <p style={{ whiteSpace: "pre-line", textAlign: "center" }}>
-                      {this.state.lyrics}
-                      {this.state.lyrics === "No lyrics available :(" && (
+                    <>
+                      <p style={{ whiteSpace: "pre-line", textAlign: "center" }}>
+                        {this.state.lyrics}
+                      </p>
+                      {this.state.missing && (
                         <div>
                           You can refer to
-                          <a href={this.state.altLink}> this link:</a>
+                          <a href={this.state.altLink}> this link </a>
+                          for full lyrics
                         </div>
                       )}
-                    </p>
+                    </>
+
                   )}
                 </div>
               </div>
