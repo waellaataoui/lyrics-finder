@@ -14,7 +14,7 @@ export default class Lyrics extends Component {
     console.log(this.props.match.params);
     axios
       .get(
-        `https://thingproxy.freeboard.io/fetch/https://api.lyrics.ovh/v1/${this.props.match.params.artistName}/${this.props.match.params.trackName}`
+        `https://cors-access-allow.herokuapp.com/https://api.lyrics.ovh/v1/${this.props.match.params.artistName}/${this.props.match.params.trackName}`
       )
       .then((response) => {
         this.setState({ lyrics: response.data.lyrics });
@@ -23,7 +23,7 @@ export default class Lyrics extends Component {
         // query musixmatch api
         axios
           .get(
-            `https://thingproxy.freeboard.io/fetch/https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
+            `https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
           ).then(res => {
             console.log(res.data);
             this.setState({
@@ -35,7 +35,7 @@ export default class Lyrics extends Component {
       });
     axios
       .get(
-        `https://thingproxy.freeboard.io/fetch/https://api.musixmatch.com/ws/1.1/track.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
+        `https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.get?apikey=${process.env.REACT_APP_MM_KEY}&commontrack_id=${this.props.match.params.trackId}`
       )
       .then((res) => {
         console.log(res.data);

@@ -1,5 +1,5 @@
 const express = require('express');
-
+const cors = require("cors")
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -30,7 +30,11 @@ if (!isDev && cluster.isMaster) {
     res.set('Content-Type', 'application/json');
     res.send('{"message":"Hello from the custom server!"}');
   });
-
+  app.use(
+    cors({
+      origin: ["https://api.musixmatch.com"],
+    })
+  );
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));

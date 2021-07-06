@@ -14,7 +14,7 @@ const SearchForm = () => {
     });
     axios
       .get(
-        `https://thingproxy.freeboard.io/fetch/http://api.musixmatch.com/ws/1.1/track.search?apikey=${process.env.REACT_APP_MM_KEY}&q_track=${songName}&page=1&s_track_rating=desc`
+        `https://cors-access-allow.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.search?apikey=${process.env.REACT_APP_MM_KEY}&q_track=${songName}&page=1&s_track_rating=desc`
       )
       .then((res) => {
         console.log(res.data);
